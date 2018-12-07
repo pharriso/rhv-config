@@ -1,0 +1,19 @@
+---
+
+- name: Auth to rhv
+  ovirt_auth:
+    url: https://{{ rhv_manager }}/ovirt-engine/api
+    username: admin@internal
+    password: "{{ rhv_password }}"
+  delegate_to: "{{ rhv_manager }}"
+
+- name: Add host to RHV
+  ovirt_host:
+    auth: "{{ ovirt_auth }}"
+    cluster: Default
+    name: "{{ inventory_hostname }}"
+    address: "{{ ansible_host }}"
+    password: "{{ rhv_password }}"
+    override_iptables: true
+  delegate_to: "{{ rhv_manager }}"
+
